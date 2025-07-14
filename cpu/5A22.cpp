@@ -46,8 +46,47 @@ vector<uint8_t> _5A22::dump_memory() {
     return copy;
 }
 
+// This function just ensures that we never request memory from an illegal address
+uint8_t _5A22::read_mem(uint32_t addr) {
+    return RAM[addr % (RAMsize * 1024)];
+}
+
+// Likewise, we never write in an illegal address 
+void _5A22::write_mem(uint32_t addr, uint8_t data) {
+    RAM[addr % (RAMsize * 1024)] = data;
+}
+
+uint8_t _5A22::pc_next() {
+    uint32_t addr = (reg.PB << 16) | reg.PC; // Adds program counter bank to program counter
+    ++reg.PC;
+    return read_mem(addr);
+}
+
 void _5A22::step() {
-    
+    uint8_t opcode = pc_next(); 
+
+    switch (opcode) {
+        case 0xA9: { // LDA #const immediate 
+            uint8_t imm = pc_next();
+            reg.A = imm;
+            break;
+        }
+        case 0xAD: { // LDA addr
+            break;
+        }
+        case 0xAF: { // LDA long
+            break;
+        }
+        case 0x81: { // STA dp indexed indirect X
+            break;
+        }
+        case 0x85: { // STA dp
+            break;
+        }
+        default:
+            throw std::runtime_error("Unknown opcode " + std::to_string(opcode));
+            break;
+    }
 
 }
 

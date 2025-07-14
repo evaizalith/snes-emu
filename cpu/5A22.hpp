@@ -38,7 +38,6 @@ public:
     void step();                         //!< Read and execute next instruction; increment PC
                                         
     void load_memory(vector<uint8_t>);   //!< Writes a passed vector to the RAM
-    
 
     _5A22_registers dump_registers();   //!< Provides a copy of register contents for debugging
     vector<uint8_t> dump_memory();      //!< Provides a vector containing a copy of RAM
@@ -47,6 +46,11 @@ private:
     _5A22_registers reg;
     uint8_t* RAM;
     int RAMsize;
+
+    uint8_t pc_next();                              // !< Reads PC and increments 
+    uint8_t read_mem(uint32_t addr);                //!< Safely reads memory
+    void    write_mem(uint32_t addr, uint8_t data); //!< Safely writes memory
+    void    
 };
 
 #endif
