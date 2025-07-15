@@ -3,8 +3,8 @@
 #include <sstream>
 
 _5A22::_5A22(int _RAMsize) {
-    RAM = new uint8_t[_RAMsize * 1024];
-    RAMsize = _RAMsize;
+    RAMsize = _RAMsize * 1024;
+    RAM = new uint8_t[RAMsize];
     reg.PC = 0;
     reg.S = 0;
 }
@@ -19,7 +19,7 @@ void _5A22::load_memory(vector<uint8_t> program) {
     }
 
     int size = program.size();
-    if (size > RAMsize * 1024) {
+    if (size > RAMsize) {
         throw std::runtime_error(
                 (std::ostringstream() << "Program passed is too big. Expected " << RAMsize << " kilobytes, got " << size << " bytes").str());
     }
@@ -48,12 +48,12 @@ vector<uint8_t> _5A22::dump_memory() {
 
 // This function just ensures that we never request memory from an illegal address
 uint8_t _5A22::read_mem(uint32_t addr) {
-    return RAM[addr % (RAMsize * 1024)];
+    return RAM[addr % (RAMsize)];
 }
 
 // Likewise, we never write in an illegal address 
 void _5A22::write_mem(uint32_t addr, uint8_t data) {
-    RAM[addr % (RAMsize * 1024)] = data;
+    RAM[addr % (RAMsize)] = data;
 }
 
 uint8_t _5A22::pc_next() {
