@@ -40,7 +40,7 @@ vector<uint8_t> _5A22::dump_memory() {
 
     vector<uint8_t> copy;
     for (int i = 0; i < RAMsize; i++) {
-        copy[i] = RAM[i];
+        copy.push_back(RAM[i]);
     }
 
     return copy;
